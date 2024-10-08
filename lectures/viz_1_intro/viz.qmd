@@ -215,6 +215,7 @@ df
 ## Building a first chart: roadmap
 * incrementally build our first chart
 * then build our first aggregated chart
+  *a chart includes data, mark, and encoding*
 
 ## The `Chart` object
 ```{python}
@@ -235,6 +236,7 @@ Actually this is many points all located in the same place
 alt.Chart(df).mark_point().encode(
   alt.Y('city')
 )
+#this is a one axis version of a graph
 ```
 
 
@@ -244,6 +246,9 @@ alt.Chart(df).mark_point().encode(
   alt.X('precip'),
   alt.Y('city')
 )
+
+#add x axis to code
+#mark is left empty of any customizations
 ```
 
 Process: Code is super-duper readable.
@@ -269,6 +274,7 @@ alt.Chart(df).mark_bar().encode(
     alt.X('average(precip)'),
     alt.Y('city')
 )
+#mark handles the visuals
 ```
 
 
@@ -324,7 +330,12 @@ Make a bar plot showing the **lowest** rainfall for each city in the dataset.
 
 Hint: Altair's aggregation methods are [here](https://altair-viz.github.io/user_guide/encodings/index.html#aggregation-functions)
 
-
+```{python}
+alt.Chart(df).mark_bar().encode(
+    alt.X('min(precip)'),
+    alt.Y('city')
+)
+```
 # Multiple Views 
 
 ## Multiple Views: roadmap
@@ -340,6 +351,7 @@ alt.Chart(cars).mark_line().encode(
     alt.X('Year'),
     alt.Y('average(Miles_per_Gallon)')
 )
+#using cars dataset, line graph, encoding: x and y axis
 ```
 
 ## Multiple Marks -- the long way
@@ -389,6 +401,8 @@ hp = alt.Chart(cars).mark_line().encode(
 )
 
 (mpg + mpg.mark_circle()) | (hp + hp.mark_circle())
+#vertical bar is a pipe symbol. two plots together
+#+ puts charts on top of one another, | pipes and puts charts next to one another
 ```
 
 ## Multiple Views -- summary
@@ -399,6 +413,13 @@ hp = alt.Chart(cars).mark_line().encode(
 Note: this is just a preview, we will do a lot more on multiple views in lecture 6 (textbook's chapter 5).
 
 # Under the hood: JSON
+```{python}
+alt.Chart(cars).mark_line(point=True).encode(
+    alt.X('Year'),
+    alt.Y('average(Miles_per_Gallon)')
+)
+```
+What happens when...
 
 
 ## roadmap
@@ -450,7 +471,14 @@ Altair can best be thought of as a language translator. It writes JSON for you. 
 ```{python}
 #python altair object. will explain :Q in next lecture
 x = alt.X('average(precipitation):Q') 
-print(x.to_json())                  
+print(x.to_json())  
+
+# {
+#   "aggregate": "average",
+#   "field": "precipitation",
+#   "type": "quantitative"
+# }
+#output . ctrl + / to comment out
 ```
 
 
@@ -470,6 +498,7 @@ chart = alt.Chart(df).mark_point().encode(
     alt.Y('city')
 )
 print(chart.to_json())
+#json output shows missing data. You can back out the data from a chart using the json keys
 ```
 
 ## syntax: `keys()`
@@ -486,6 +515,13 @@ chart.keys()
 ```{python}
 chart.get("datasets")
 ```
+```{python}
+alt.Chart(cars).mark_line(point=True).encode(
+    alt.X('Year'),
+    alt.Y('average(Miles_per_Gallon)')
+)
+```
+What happens when...
 
 
 ## in-class exercise
@@ -493,6 +529,12 @@ chart.get("datasets")
 1. extract `chart`'s encoding.
 2. extract just the encoding for `x`
 
+```{python}
+chart.get("encoding")
+# {'x': {'aggregate': 'average', 'field': 'precip', 'type': 'quantitative'},
+#  'y': {'field': 'city', 'type': 'nominal'}}
+chart.get("encoding").get("x")
+```
 
 ## summary
 

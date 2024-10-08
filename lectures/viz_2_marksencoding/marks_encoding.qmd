@@ -46,6 +46,7 @@ data = pd.read_json('data/gapminder.json')
 
 ```{python}
 data.shape
+#explore data.
 ```
 
 ## `head()` + summary
@@ -79,7 +80,9 @@ Pandas data frames come with types. When loading data not from pandas, explicitl
 * *Nominal* data (also called *categorical* data) consist of category names. 
 * Ask *is value A the same or different than value B? (A = B)*, supporting statements like “A is equal to B” or “A is not equal to B”.
     * In the dataset above, the `country` field is `N`ominal.
-* When visualizing nominal data we should readily be able to see if values are the same or different: position, color hue (blue, red, green), and shape can help. 
+* When visualizing nominal data we should readily be able to see if values are the same or different: position, color hue (blue, red, green), and shape can help.
+
+*are two things in the same category or not*
 
 <!--PG to GGG/SSS This comment doesn't make sense here because we haven't even covered what the size channel is yet
     * Remark: using a `size` channel to encode nominal data might mislead us, suggesting rank-order or magnitude differences among values that do not exist!-->
@@ -88,9 +91,9 @@ Pandas data frames come with types. When loading data not from pandas, explicitl
 
 * *Ordinal* data consist of values that have a specific ordering.
 * Ask: *does value A come before or after value B? (A < B)*, supporting statements like “A is less than B” or “A is greater than B”.
-    * In the dataset above, we can treat the `year` field as `O`rdinal.
+    * In the dataset above, we can treat the `year` field as ordinal.
 * When visualizing ordinal data, we should perceive a sense of rank-order. Position, size, or color value (brightness) might be appropriate.
-    * Remark: color hue (which is not perceptually ordered) would be less appropriate.
+    * Remark: color hue (which is not perceptually ordered) would be less appropriate. *but saturation of a single color would work*
 
 ## Quantitative (Q)
 
@@ -107,9 +110,9 @@ Pandas data frames come with types. When loading data not from pandas, explicitl
 * One way to check if you're working with *ratio* and *interval* data: **does zero mean anything?**
 * Textbook: "An axis with a zero baseline is essential for proportional comparisons of ratio values, but can be safely omitted for interval comparisons."
 * In the dataset above:
-    * `year` is a quantitative interval field: depending on whose history of the world you prefer, there are many choices for the year "zero"
+    * `year` is a **quantitative interval field**: depending on whose history of the world you prefer, there are many choices for the year "zero" (there isn't really an need to plot down to zero)
         * We're either in year 2024 (Gregorian), 5784 (Hebrew), or 1445 (Islamic calendar)
-    * `fertility` and `life_expect` are quantitative ratio fields: zero is meaningful for calculating proportions
+    * `fertility` and `life_expect` are **quantitative ratio fields**: zero is meaningful for calculating proportions
 * Discussion question -- Why is it so important to include zeros for ratio data? Can you give an example where omitting zeros on the plot would lead the reader to misleading conclusions? 
 
 
@@ -159,10 +162,19 @@ alt.Chart(seattle).mark_bar().encode(
 ```
 
 
+```{python}
+number_list = [1 , 2, 3 , 4]
 
+total = 0
+
+for num in number_list:
+    total += num
+
+print(total)
+
+```
 ## In-class exercises
 
-What happens when...
 
 * Make `precipitation` ordinal
 * Revert. then make `date` temporal. There's a consequential but subtle change relative to the original plot. What is it?
